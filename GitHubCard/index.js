@@ -2,13 +2,11 @@
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
 */
-// axios.get("https://api.github.com/users/LoganSorensen")
+axios.get("https://api.github.com/users/LoganSorensen")
 .then(response => {
   console.log(response.data);
-  // response.data.message.forEach(item => {
     const newUser = userCard(response.data);
     cards.appendChild(newUser);
-  // })
 })
 .catch(error => {
   console.log("The data was not returned", error);
@@ -35,6 +33,15 @@
 */
 
 const followersArray = ["Issac909", "thericktastic", "cholman", "FreedomWriter", "c0derbr1t"];
+followersArray.forEach(item => {
+  axios.get(`https://api.github.com/users/${item}`)
+  .then(response => {
+    const newUser = userCard(response.data);
+    cards.appendChild(newUser);
+  })
+})
+
+
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -67,6 +74,8 @@ function userCard(object) {
         following = document.createElement("p"),
         bio = document.createElement("p");
 
+  
+
   card.classList.add("card");
   cardInfo.classList.add("card-info");
   name.classList.add("name");
@@ -76,8 +85,9 @@ function userCard(object) {
   name.textContent = object.name;
   username.textContent = object.login;
   location.textContent = object.location;
-  profile.textContent = link;
-  link.href = object;
+  link.textContent = object.html_url;
+  profile.textContent = "Profile: ";
+  link.href = object.html_url;
   followers.textContent = object.followers;
   following.textContent = object.following;
   bio.textContent = object.bio;
@@ -96,6 +106,7 @@ function userCard(object) {
   return card;
 }
 const cards = document.querySelector(".cards");
+
 
 /* List of LS Instructors Github username's: 
   tetondan
